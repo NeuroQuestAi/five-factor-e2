@@ -39,26 +39,30 @@ fn main() {
     );
 
     let facet1 = facet::Facet::new(model::QuestionNumber::Ipip120);
-    let domain = facet1.expect("Booommm-2").domain(&res);
+    let domain = facet1.expect("Error create domain").domain(&res);
     println!("Domain = {:?}", domain);
 
     let mut normc: HashMap<char, f64> = HashMap::new();
 
     // Norms
-    match norm::Norm::new("F", 18, norm::NormType::Item120) {
+    match norm::Norm::new("M", 38, norm::NormType::Item120) {
         Ok(norm) => {
             println!("Norm ID: {}", norm.get_id());
             println!("Norm Category: {}", norm.get_category());
             println!("Norm Values: {:?}", norm.get_ns());
 
-            //println!("Norm Calc {:?}", norm.calc(&domain));
             normc = norm.calc(&domain);
+            println!("Norm Calc: {:?}", normc);
+
+            let percent = norm.percent(&normc);
+            println!("Norm Percent: {:?}", percent);
+
+            let normalize = norm::NormScale.normalize(&normc, &percent);
+            println!("Norm Scale: {:?}", normalize)
         }
         Err(err) => {
             println!("Error: {}", err);
         }
     }
-
-    println!("Norm Calc {:?}", normc);
 
 }
