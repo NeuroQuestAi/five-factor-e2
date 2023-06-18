@@ -193,9 +193,15 @@ impl Norm {
         let a = NormCubic::calculate_percent(*normc.get(&'A').unwrap_or(&0.0));
         let c = NormCubic::calculate_percent(*normc.get(&'C').unwrap_or(&0.0));
 
-        let result: HashMap<char, f64> = vec![('O', o as f64), ('C', c as f64), ('E', e as f64), ('A', a as f64), ('N', n as f64)]
-            .into_iter()
-            .collect();
+        let result: HashMap<char, f64> = vec![
+            ('O', o as f64),
+            ('C', c as f64),
+            ('E', e as f64),
+            ('A', a as f64),
+            ('N', n as f64),
+        ]
+        .into_iter()
+        .collect();
 
         result
     }
@@ -209,14 +215,53 @@ impl NormScale {
     const CONST_MAX: f64 = 73.0;
     const CONST_MIN: f64 = 32.0;
 
-    pub fn normalize(&self, normc: &HashMap<char, f64>, percent: &HashMap<char, f64>) -> HashMap<char, f64> {
+    pub fn normalize(
+        &self,
+        normc: &HashMap<char, f64>,
+        percent: &HashMap<char, f64>,
+    ) -> HashMap<char, f64> {
         let mut result: HashMap<char, f64> = HashMap::new();
 
-        result.insert('N', if normc.get(&'N').unwrap_or(&0.0) < &Self::CONST_MIN { 1.0 } else { *percent.get(&'N').unwrap_or(&0.0) });
-        result.insert('E', if normc.get(&'E').unwrap_or(&0.0) < &Self::CONST_MIN { 1.0 } else { *percent.get(&'E').unwrap_or(&0.0) });
-        result.insert('O', if normc.get(&'O').unwrap_or(&0.0) < &Self::CONST_MIN { 1.0 } else { *percent.get(&'O').unwrap_or(&0.0) });
-        result.insert('A', if normc.get(&'A').unwrap_or(&0.0) < &Self::CONST_MIN { 1.0 } else { *percent.get(&'A').unwrap_or(&0.0) });
-        result.insert('C', if normc.get(&'C').unwrap_or(&0.0) < &Self::CONST_MIN { 1.0 } else { *percent.get(&'C').unwrap_or(&0.0) });
+        result.insert(
+            'N',
+            if normc.get(&'N').unwrap_or(&0.0) < &Self::CONST_MIN {
+                1.0
+            } else {
+                *percent.get(&'N').unwrap_or(&0.0)
+            },
+        );
+        result.insert(
+            'E',
+            if normc.get(&'E').unwrap_or(&0.0) < &Self::CONST_MIN {
+                1.0
+            } else {
+                *percent.get(&'E').unwrap_or(&0.0)
+            },
+        );
+        result.insert(
+            'O',
+            if normc.get(&'O').unwrap_or(&0.0) < &Self::CONST_MIN {
+                1.0
+            } else {
+                *percent.get(&'O').unwrap_or(&0.0)
+            },
+        );
+        result.insert(
+            'A',
+            if normc.get(&'A').unwrap_or(&0.0) < &Self::CONST_MIN {
+                1.0
+            } else {
+                *percent.get(&'A').unwrap_or(&0.0)
+            },
+        );
+        result.insert(
+            'C',
+            if normc.get(&'C').unwrap_or(&0.0) < &Self::CONST_MIN {
+                1.0
+            } else {
+                *percent.get(&'C').unwrap_or(&0.0)
+            },
+        );
 
         if let Some(value) = result.get_mut(&'N') {
             if *value > Self::CONST_MAX {

@@ -4,6 +4,12 @@ use std::error::Error;
 use crate::model::FacetScale;
 use crate::model::QuestionNumber;
 
+#[derive(Debug, PartialEq, Eq)]
+enum FacetLevel {
+    High = 55,
+    Low = 45,
+}
+
 #[derive(Clone)]
 pub struct Facet {
     scale: Option<i32>,
@@ -121,5 +127,24 @@ impl Facet {
         }
 
         result
+    }
+
+    fn big_five_level(
+        &self,
+        big5: &HashMap<String, u32>,
+        label: &str,
+    ) -> Result<HashMap<String, u32>, &'static str> {
+        let mut big5_clone = big5.clone();
+        let score = big5.get(label).ok_or("Invalid Big-Five label")?;
+
+        let new_score = match *score {
+            score if score < FacetLevel::Low as u32 => 0,
+            score if score <= FacetLevel::High as u32 => 1,
+            _ => 2,
+        };
+
+        big5_clone.insert("score".to_string(), new_score);
+
+        Ok(big5_clone)
     }
 }

@@ -75,8 +75,6 @@ impl fmt::Display for NormScale {
     }
 }
 
-
-
 pub enum Big5Neuroticism {
     Trait1,
     Trait2,
