@@ -75,6 +75,7 @@ impl fmt::Display for NormScale {
     }
 }
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum Big5Neuroticism {
     Trait1,
     Trait2,
@@ -101,6 +102,7 @@ impl fmt::Display for Big5Neuroticism {
     }
 }
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum Big5Extraversion {
     Trait1,
     Trait2,
@@ -127,6 +129,7 @@ impl fmt::Display for Big5Extraversion {
     }
 }
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum Big5Openness {
     Trait1,
     Trait2,
@@ -153,6 +156,7 @@ impl fmt::Display for Big5Openness {
     }
 }
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum Big5Agreeableness {
     Trait1,
     Trait2,
@@ -179,6 +183,7 @@ impl fmt::Display for Big5Agreeableness {
     }
 }
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum Big5Conscientiousness {
     Trait1,
     Trait2,

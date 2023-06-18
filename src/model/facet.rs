@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 use std::error::Error;
 
-use crate::model::FacetScale;
-use crate::model::QuestionNumber;
+use crate::{model::define::FacetScale, model::define::QuestionNumber};
 
 #[derive(Debug, PartialEq, Eq)]
 enum FacetLevel {
@@ -40,7 +39,7 @@ impl Facet {
         }
 
         answers.insert(0, 0);
-        let mut ss = vec![0; answers.len()];
+        let mut ss: Vec<i32> = vec![0; answers.len()];
 
         for j in 0..FacetScale::IpipMax as usize {
             for i in 0..self.scale.unwrap() as usize {
@@ -52,14 +51,14 @@ impl Facet {
     }
 
     pub fn b5create(&self, score: &Vec<i32>) -> std::collections::HashMap<String, Vec<i32>> {
-        let mut ss = score.to_owned();
-        let mut j = 0;
+        let mut ss: Vec<i32> = score.to_owned();
+        let mut j: usize = 0;
 
-        let mut n = vec![0; ss.len()];
-        let mut e = vec![0; ss.len()];
-        let mut o = vec![0; ss.len()];
-        let mut a = vec![0; ss.len()];
-        let mut c = vec![0; ss.len()];
+        let mut n: Vec<i32> = vec![0; ss.len()];
+        let mut e: Vec<i32> = vec![0; ss.len()];
+        let mut o: Vec<i32> = vec![0; ss.len()];
+        let mut a: Vec<i32> = vec![0; ss.len()];
+        let mut c: Vec<i32> = vec![0; ss.len()];
 
         for i in 1..=6 {
             n[i] = ss[i + j];
@@ -81,11 +80,11 @@ impl Facet {
     }
 
     pub fn domain(&self, score: &Vec<i32>) -> HashMap<char, f64> {
-        let n = score[1] + score[6] + score[11] + score[16] + score[21] + score[26];
-        let e = score[2] + score[7] + score[12] + score[17] + score[22] + score[27];
-        let o = score[3] + score[8] + score[13] + score[18] + score[23] + score[28];
-        let a = score[4] + score[9] + score[14] + score[19] + score[24] + score[29];
-        let c = score[5] + score[10] + score[15] + score[20] + score[25] + score[30];
+        let n: i32 = score[1] + score[6] + score[11] + score[16] + score[21] + score[26];
+        let e: i32 = score[2] + score[7] + score[12] + score[17] + score[22] + score[27];
+        let o: i32 = score[3] + score[8] + score[13] + score[18] + score[23] + score[28];
+        let a: i32 = score[4] + score[9] + score[14] + score[19] + score[24] + score[29];
+        let c: i32 = score[5] + score[10] + score[15] + score[20] + score[25] + score[30];
 
         let result: HashMap<char, f64> = [
             ('O', o as f64),
@@ -113,14 +112,14 @@ impl Facet {
 
         let mut result: HashMap<char, Vec<i32>> = HashMap::new();
 
-        let keys = ['O', 'C', 'E', 'A', 'N'];
+        let keys: [char; 5] = ['O', 'C', 'E', 'A', 'N'];
 
         for key in keys.iter() {
             let b5_scores = b5.get(key).unwrap();
             let norm_values = norm.get("ns").unwrap();
 
             let scores: Vec<i32> = (1..=6)
-                .map(|i| calculate_score(b5_scores[i], norm_values, (i - 1) * 6, 10))
+                .map(|i: usize| calculate_score(b5_scores[i], norm_values, (i - 1) * 6, 10))
                 .collect();
 
             result.insert(*key, scores);
@@ -135,9 +134,9 @@ impl Facet {
         label: &str,
     ) -> Result<HashMap<String, u32>, &'static str> {
         let mut big5_clone = big5.clone();
-        let score = big5.get(label).ok_or("Invalid Big-Five label")?;
+        let score: &u32 = big5.get(label).ok_or("Invalid Big-Five label")?;
 
-        let new_score = match *score {
+        let new_score: u32 = match *score {
             score if score < FacetLevel::Low as u32 => 0,
             score if score <= FacetLevel::High as u32 => 1,
             _ => 2,

@@ -1,5 +1,13 @@
 use std::collections::HashMap;
 use std::convert::From;
+use std::error::Error;
+
+//use crate::utility::err_if_sex_is_invalid;
+//use utility::err_if_age_is_invalid;
+//use crate::utility::err_if_sex_is_invalid;
+
+//use crate::reverse::scored_120;
+//mod reverse;
 
 #[derive(Debug, PartialEq, Eq)]
 enum QuestionNumber {
@@ -15,18 +23,17 @@ enum FacetLevel {
 
 pub struct IpipNeo {
     nquestion: QuestionNumber,
-    test: bool,
 }
 
 impl IpipNeo {
-    pub fn new(question: i32, test: bool) -> Result<Self, &'static str> {
+    pub fn new(question: i32) -> Result<Self, &'static str> {
         let nquestion = match question {
             120 => QuestionNumber::Ipip120,
             300 => QuestionNumber::Ipip300,
             _ => return Err("Invalid question type!"),
         };
 
-        Ok(IpipNeo { nquestion, test })
+        Ok(IpipNeo { nquestion })
     }
 
     pub fn evaluator(

@@ -1,7 +1,5 @@
 use std::collections::HashMap;
 
-//mod model;
-
 pub enum NormType {
     Item120,
     Item300,
@@ -166,11 +164,11 @@ impl Norm {
     }
 
     pub fn calc(&self, domain: &HashMap<char, f64>) -> HashMap<char, f64> {
-        let n = (10.0 * (domain.get(&'N').unwrap_or(&0.0) - self.ns[1]) / self.ns[6]) + 50.0;
-        let e = (10.0 * (domain.get(&'E').unwrap_or(&0.0) - self.ns[2]) / self.ns[7]) + 50.0;
-        let o = (10.0 * (domain.get(&'O').unwrap_or(&0.0) - self.ns[3]) / self.ns[8]) + 50.0;
-        let a = (10.0 * (domain.get(&'A').unwrap_or(&0.0) - self.ns[4]) / self.ns[9]) + 50.0;
-        let c = (10.0 * (domain.get(&'C').unwrap_or(&0.0) - self.ns[5]) / self.ns[10]) + 50.0;
+        let n: f64 = (10.0 * (domain.get(&'N').unwrap_or(&0.0) - self.ns[1]) / self.ns[6]) + 50.0;
+        let e: f64 = (10.0 * (domain.get(&'E').unwrap_or(&0.0) - self.ns[2]) / self.ns[7]) + 50.0;
+        let o: f64 = (10.0 * (domain.get(&'O').unwrap_or(&0.0) - self.ns[3]) / self.ns[8]) + 50.0;
+        let a: f64 = (10.0 * (domain.get(&'A').unwrap_or(&0.0) - self.ns[4]) / self.ns[9]) + 50.0;
+        let c: f64 = (10.0 * (domain.get(&'C').unwrap_or(&0.0) - self.ns[5]) / self.ns[10]) + 50.0;
 
         let result: HashMap<char, f64> = [
             ('O', o as f64),
@@ -187,11 +185,11 @@ impl Norm {
     }
 
     pub fn percent(&self, normc: &HashMap<char, f64>) -> HashMap<char, f64> {
-        let n = NormCubic::calculate_percent(*normc.get(&'N').unwrap_or(&0.0));
-        let e = NormCubic::calculate_percent(*normc.get(&'E').unwrap_or(&0.0));
-        let o = NormCubic::calculate_percent(*normc.get(&'O').unwrap_or(&0.0));
-        let a = NormCubic::calculate_percent(*normc.get(&'A').unwrap_or(&0.0));
-        let c = NormCubic::calculate_percent(*normc.get(&'C').unwrap_or(&0.0));
+        let n: f64 = NormCubic::calculate_percent(*normc.get(&'N').unwrap_or(&0.0));
+        let e: f64 = NormCubic::calculate_percent(*normc.get(&'E').unwrap_or(&0.0));
+        let o: f64 = NormCubic::calculate_percent(*normc.get(&'O').unwrap_or(&0.0));
+        let a: f64 = NormCubic::calculate_percent(*normc.get(&'A').unwrap_or(&0.0));
+        let c: f64 = NormCubic::calculate_percent(*normc.get(&'C').unwrap_or(&0.0));
 
         let result: HashMap<char, f64> = vec![
             ('O', o as f64),
