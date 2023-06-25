@@ -31,7 +31,7 @@ pub fn err_if_sex_is_invalid(sex: &str) -> Result<bool, Box<dyn std::error::Erro
     Ok(true)
 }
 
-pub fn raise_if_age_is_invalid(age: i32) -> Result<bool, Box<dyn std::error::Error>> {
+pub fn err_if_age_is_invalid(age: i32) -> Result<bool, Box<dyn std::error::Error>> {
     if age <= 0 {
         return Err("The (age) field is required!".into());
     }
