@@ -11,9 +11,9 @@ use std::convert::From;
 use std::error::Error;
 
 
-use crate::{model::norm::Norm, model::define::NormType, model::define::QuestionNumber, model::define::FacetLevel};
+use crate::{model::norm::Norm, model::norm::NormScale, model::define::NormType, model::define::QuestionNumber, model::define::FacetLevel};
+use crate::{model::facet::Facet};
 use crate::{utility::common::err_if_sex_is_invalid, utility::common::err_if_age_is_invalid};
-
 
 pub struct IpipNeo {
     nquestion: QuestionNumber,
@@ -40,32 +40,53 @@ impl IpipNeo {
             Ok(_valid) => {
             }
             Err(err) => {
-                println!("Error: {}", err);
+                println!("Ops... sex is invalid: {}", err);
             }
         }
+
+        match err_if_age_is_invalid(age) {
+            Ok(_valid) => {
+            }
+            Err(err) => {
+                println!("Ops... age is invalid: {}", err);
+            }
+        }
+
+        let mut normc: HashMap<char, f64> = HashMap::new();
 
         match Norm::new(sex, age, NormType::Item120) {
             Ok(norm) => {
-                println!("Norm ID: {}", norm.get_id());
-                println!("Norm Category: {}", norm.get_category());
-                println!("Norm Values: {:?}", norm.get_ns());
+                // println!("Norm id: {}", norm.get_id());
+                // println!("Norm category: {}", norm.get_category());
+                // println!("Norm ns: {:?}", norm.get_ns());
 
-                let normc: HashMap<char, f64> = norm.calc(&score);
-                println!("Norm Calc: {:?}", normc);
+                normc = norm.calc(&score);
+                println!("Norm calc: {:?}", normc);
 
-                let percent: HashMap<char, f64> = norm.percent(&normc);
-                println!("Norm Percent: {:?}", percent);
+                // let percent: HashMap<char, f64> = norm.percent(&normc);
+                // println!("Norm percent: {:?}", percent);
 
-                // let normalize = norm::NormScale.normalize(&normc, &percent);
-                // println!("Norm Scale: {:?}", normalize)
+                // let normalize: HashMap<char, f64> = NormScale.normalize(&normc, &percent);
+                // println!("Norm scale: {:?}", normalize)
             }
             Err(err) => {
-                println!("Error: {}", err);
+                println!("An error occurred while applying the Norm: {}", err);
             }
         }
 
-        println!("My age is {}", age);
-        println!("My list is: {:?}", score);
+        let facet: Result<Facet, Box<dyn Error>> = Facet::new(QuestionNumber::Ipip120);
+
+        let res: Vec<i32> = score
+        .values()
+        .map(|value| *value as i32)
+        .collect();
+    
+        let b5create: HashMap<String, Vec<i32>> = facet.expect("Error trying: b5create").b5create(&res);
+        println!("b5create = {:?}", b5create);
+
+        // let distrib = facet.expect("Error create distrib").distrib(&res);
+        // println!("Domain = {:?}", distrib);
+    
 
         let mut result: HashMap<String, u32> = HashMap::new();
         result.insert("O".to_string(), 1);
