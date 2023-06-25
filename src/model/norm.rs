@@ -8,10 +8,7 @@
 
 use std::collections::HashMap;
 
-pub enum NormType {
-    Item120,
-    Item300,
-}
+use crate::model::define::NormType;
 
 struct NormCubic(f64);
 

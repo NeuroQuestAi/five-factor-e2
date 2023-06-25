@@ -217,3 +217,22 @@ impl fmt::Display for Big5Conscientiousness {
         )
     }
 }
+
+
+pub enum NormType {
+    Item120,
+    Item300,
+}
+
+impl fmt::Display for NormType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::Item120 => 120,
+                Self::Item300 => 300,
+            }
+        )
+    }
+}

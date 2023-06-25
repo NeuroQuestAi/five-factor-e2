@@ -17,6 +17,18 @@ use std::error::Error;
 //use crate::reverse::scored_120;
 //mod reverse;
 
+// use crate::model::norm::Norm;
+
+use crate::{model::norm::Norm, model::define::NormType};
+//use crate::model::norm::Norm;
+//use crate::model::define::NormType;
+
+
+//use crate::error::AppError;
+//use crate::model::norm::Norm;
+//use crate::model::norm::NormType;
+
+
 #[derive(Debug, PartialEq, Eq)]
 enum QuestionNumber {
     Ipip300 = 300,
@@ -50,6 +62,30 @@ impl IpipNeo {
         age: u32,
         score: &Vec<u32>,
     ) -> Result<HashMap<String, u32>, &'static str> {
+        // norm = Norm(sex=sex, age=age, nquestion=self._nquestion)
+        // assert isinstance(norm, dict), "norm must be a dict"
+
+        // Norms
+        match Norm::new("M", 38, NormType::Item120) {
+            Ok(norm) => {
+                println!("Norm ID: {}", norm.get_id());
+                println!("Norm Category: {}", norm.get_category());
+                println!("Norm Values: {:?}", norm.get_ns());
+
+                // normc = norm.calc(&domain);
+                // println!("Norm Calc: {:?}", normc);
+
+                // let percent = norm.percent(&normc);
+                // println!("Norm Percent: {:?}", percent);
+
+                // let normalize = norm::NormScale.normalize(&normc, &percent);
+                // println!("Norm Scale: {:?}", normalize)
+            }
+            Err(err) => {
+                println!("Error: {}", err);
+            }
+        }
+
         if sex == "M" {
             println!("My age is {}", age);
             println!("My list is: {:?}", score);

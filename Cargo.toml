@@ -1,7 +1,8 @@
 [package]
-name = "five-factor-e2"
+name = "five_factor_e2"
 version = "0.1.0"
 edition = "2021"
+authors = ["Ederson Corbari"]
 
 [dependencies]
 maplit = "1.0"
