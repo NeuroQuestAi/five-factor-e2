@@ -7,16 +7,15 @@
 // Status: development
 
 use chrono::prelude::*;
-use std::format;
-use std::convert::TryInto;
-use std::collections::HashMap;
 use maplit::hashmap;
+use std::collections::HashMap;
+use std::convert::TryInto;
+use std::format;
 
 use crate::{
     model::define::Big5Agreeableness, model::define::Big5Conscientiousness,
     model::define::Big5Extraversion, model::define::Big5Neuroticism, model::define::Big5Openness,
 };
-
 
 pub fn err_if_sex_is_invalid(sex: &str) -> Result<bool, Box<dyn std::error::Error>> {
     if sex.is_empty() {
@@ -134,14 +133,19 @@ pub fn create_big5_dict(
     let mut inner_vec: Vec<HashMap<String, String>> = Vec::new();
     let mut inner_dict: HashMap<String, String> = HashMap::new();
     inner_dict.insert(label.to_string(), big5.to_string());
-    inner_dict.insert("traits".to_string(), serde_json::to_string(&traits).unwrap());
+    inner_dict.insert(
+        "traits".to_string(),
+        serde_json::to_string(&traits).unwrap(),
+    );
     inner_vec.push(inner_dict);
     big5_dict.insert(label.to_string(), inner_vec);
 
     Ok(big5_dict)
 }
 
-pub fn organize_list_json(answers: &serde_json::Value) -> Result<Vec<i32>, Box<dyn std::error::Error>> {
+pub fn organize_list_json(
+    answers: &serde_json::Value,
+) -> Result<Vec<i32>, Box<dyn std::error::Error>> {
     assert!(
         answers.is_object(),
         "The 'answers' field must be a dictionary!"
@@ -170,7 +174,10 @@ pub fn organize_list_json(answers: &serde_json::Value) -> Result<Vec<i32>, Box<d
 
     sorted_answers.sort_by_key(|x: &(i32, i32)| x.0);
 
-    let organized_list: Vec<i32> = sorted_answers.into_iter().map(|x: (i32, i32)| x.1).collect::<Vec<_>>();
+    let organized_list: Vec<i32> = sorted_answers
+        .into_iter()
+        .map(|x: (i32, i32)| x.1)
+        .collect::<Vec<_>>();
 
     Ok(organized_list)
 }
@@ -181,4 +188,30 @@ pub fn add_dict_footer() -> HashMap<String, String> {
         "version".to_string() => "1.0.0".to_string(),
         "date".to_string() => Local::now().format("%Y-%m-%d %H:%M:%S").to_string(),
     }
+}
+
+pub fn to_hashmap_str_veci32(hashmap: HashMap<char, f64>) -> HashMap<String, Vec<i32>> {
+    let mut converted_hashmap: HashMap<String, Vec<i32>> = HashMap::new();
+
+    for (key, value) in hashmap {
+        let converted_value = value as i32;
+        let entry = converted_hashmap
+            .entry(key.to_string())
+            .or_insert(Vec::new());
+        entry.push(converted_value);
+    }
+
+    converted_hashmap
+}
+
+pub fn to_hashmap_char_veci32(hashmap: HashMap<String, Vec<i32>>) -> HashMap<char, Vec<i32>> {
+    let mut converted_hashmap: HashMap<char, Vec<i32>> = HashMap::new();
+
+    for (key, value) in hashmap {
+        if let Some(first_char) = key.chars().next() {
+            converted_hashmap.insert(first_char, value);
+        }
+    }
+
+    converted_hashmap
 }

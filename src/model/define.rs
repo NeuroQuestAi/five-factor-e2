@@ -8,7 +8,6 @@
 
 use std::fmt;
 
-
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub enum QuestionNumber {
     Ipip300 = 300,
@@ -27,7 +26,6 @@ impl fmt::Display for QuestionNumber {
         )
     }
 }
-
 
 pub enum FacetScale {
     IpipMax = 30,
@@ -219,7 +217,6 @@ impl fmt::Display for Big5Conscientiousness {
         )
     }
 }
-
 
 pub enum NormType {
     Item120,

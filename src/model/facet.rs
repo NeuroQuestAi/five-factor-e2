@@ -110,7 +110,6 @@ impl Facet {
 
     pub fn distrib(
         &self,
-        size: usize,
         b5: &HashMap<char, Vec<i32>>,
         norm: &HashMap<String, Vec<i32>>,
     ) -> HashMap<char, Vec<i32>> {

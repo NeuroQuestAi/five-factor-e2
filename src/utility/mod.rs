@@ -6,5 +6,5 @@
 // Version: 1.1.0
 // Status: development
 
-pub mod reverse;
 pub mod common;
+pub mod reverse;
